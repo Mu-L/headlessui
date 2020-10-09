@@ -1,19 +1,6 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-
-import { Listbox } from './listbox'
-import { suppressConsoleLogs } from '../../test-utils/suppress-console-logs'
-import {
-  click,
-  focus,
-  mouseMove,
-  mouseLeave,
-  press,
-  shift,
-  type,
-  word,
-  Keys,
-} from '../../test-utils/interactions'
+import { suppressConsoleLogs } from '@headlessui/tests/utils'
 import {
   assertActiveElement,
   assertActiveListboxOption,
@@ -33,7 +20,20 @@ import {
   getListboxOptions,
   getListboxLabel,
   ListboxState,
-} from '../../test-utils/accessibility-assertions'
+} from '@headlessui/tests/accessibility-assertions'
+import {
+  click,
+  focus,
+  mouseMove,
+  mouseLeave,
+  press,
+  shift,
+  type,
+  word,
+  Keys,
+} from '@headlessui/tests/interactions'
+
+import { Listbox } from './listbox'
 
 jest.mock('../../hooks/use-id')
 

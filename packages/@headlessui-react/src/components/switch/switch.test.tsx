@@ -1,16 +1,16 @@
 import React from 'react'
 import { render } from '@testing-library/react'
-
-import { Switch } from './switch'
+import { suppressConsoleLogs } from '@headlessui/tests/utils'
 import {
   SwitchState,
   assertSwitch,
   getSwitch,
   assertActiveElement,
   getSwitchLabel,
-} from '../../test-utils/accessibility-assertions'
-import { press, click, Keys } from '../../test-utils/interactions'
-import { suppressConsoleLogs } from '../../test-utils/suppress-console-logs'
+} from '@headlessui/tests/accessibility-assertions'
+import { press, click, Keys } from '@headlessui/tests/interactions'
+
+import { Switch } from './switch'
 
 jest.mock('../../hooks/use-id')
 

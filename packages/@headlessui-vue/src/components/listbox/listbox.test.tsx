@@ -1,7 +1,7 @@
 import { defineComponent, ref, watch } from 'vue'
 import { render } from '../../test-utils/vue-testing-library'
 import { Listbox, ListboxLabel, ListboxButton, ListboxOptions, ListboxOption } from './listbox'
-import { suppressConsoleLogs } from '../../test-utils/suppress-console-logs'
+import { suppressConsoleLogs } from '@headlessui/tests/utils'
 import {
   assertActiveElement,
   assertActiveListboxOption,
@@ -21,7 +21,7 @@ import {
   getListboxOptions,
   getListboxLabel,
   ListboxState,
-} from '../../test-utils/accessibility-assertions'
+} from '@headlessui/tests/accessibility-assertions'
 import {
   click,
   focus,
@@ -32,7 +32,7 @@ import {
   type,
   word,
   Keys,
-} from '../../test-utils/interactions'
+} from '@headlessui/tests/interactions'
 
 jest.mock('../../hooks/use-id')
 
@@ -95,44 +95,35 @@ describe('safeguards', () => {
 
 describe('Rendering', () => {
   describe('Listbox', () => {
-    it(
-      'should be possible to render a Listbox using a render prop',
-      suppressConsoleLogs(async () => {
-        renderTemplate({
-          template: `
-            <Listbox v-model="value">
-              {({ open }) => (
-                <>
-                  <ListboxButton>Trigger</ListboxButton>
-                  {open && (
-                    <ListboxOptions>
-                      <ListboxOption value="a">Option A</ListboxOption>
-                      <ListboxOption value="b">Option B</ListboxOption>
-                      <ListboxOption value="c">Option C</ListboxOption>
-                    </ListboxOptions>
-                  )}
-                </>
-              )}
-            </Listbox>
-          `,
-          setup: () => ({ value: ref(null) }),
-        })
-
-        assertListboxButton({
-          state: ListboxState.Closed,
-          attributes: { id: 'headlessui-listbox-button-1' },
-        })
-        assertListbox({ state: ListboxState.Closed })
-
-        await click(getListboxButton())
-
-        assertListboxButton({
-          state: ListboxState.Open,
-          attributes: { id: 'headlessui-listbox-button-1' },
-        })
-        assertListbox({ state: ListboxState.Open })
+    it('should be possible to render a Listbox using a render prop', async () => {
+      renderTemplate({
+        template: `
+          <Listbox v-model="value" v-slot="{ open }">
+            <ListboxButton>Trigger</ListboxButton>
+            <ListboxOptions v-show="open">
+              <ListboxOption value="a">Option A</ListboxOption>
+              <ListboxOption value="b">Option B</ListboxOption>
+              <ListboxOption value="c">Option C</ListboxOption>
+            </ListboxOptions>
+          </Listbox>
+        `,
+        setup: () => ({ value: ref(null) }),
       })
-    )
+
+      assertListboxButton({
+        state: ListboxState.Closed,
+        attributes: { id: 'headlessui-listbox-button-1' },
+      })
+      assertListbox({ state: ListboxState.Closed })
+
+      await click(getListboxButton())
+
+      assertListboxButton({
+        state: ListboxState.Open,
+        attributes: { id: 'headlessui-listbox-button-1' },
+      })
+      assertListbox({ state: ListboxState.Open })
+    })
   })
 
   describe('ListboxLabel', () => {

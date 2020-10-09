@@ -1,16 +1,16 @@
 import { defineComponent, ref, watch } from 'vue'
 import { render } from '../../test-utils/vue-testing-library'
-
-import { Switch, SwitchLabel, SwitchGroup } from './switch'
+import { suppressConsoleLogs } from '@headlessui/tests/utils'
 import {
   SwitchState,
   assertSwitch,
   getSwitch,
   assertActiveElement,
   getSwitchLabel,
-} from '../../test-utils/accessibility-assertions'
-import { press, click, Keys } from '../../test-utils/interactions'
-import { suppressConsoleLogs } from '../../test-utils/suppress-console-logs'
+} from '@headlessui/tests/accessibility-assertions'
+import { press, click, Keys } from '@headlessui/tests/interactions'
+
+import { Switch, SwitchLabel, SwitchGroup } from './switch'
 
 jest.mock('../../hooks/use-id')
 

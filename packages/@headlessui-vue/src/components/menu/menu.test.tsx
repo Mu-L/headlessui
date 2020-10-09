@@ -1,8 +1,7 @@
 import { defineComponent, h } from 'vue'
-import { menu } from '@headlessui/tests'
 import { render } from '../../test-utils/vue-testing-library'
-import { Menu, MenuButton, MenuItems, MenuItem } from './menu'
-import { suppressConsoleLogs } from '../../test-utils/suppress-console-logs'
+import { menu } from '@headlessui/tests/suits'
+import { suppressConsoleLogs } from '@headlessui/tests/utils'
 import {
   MenuState,
   assertMenu,
@@ -13,8 +12,10 @@ import {
   getMenuButton,
   getMenu,
   getMenuItems,
-} from '../../test-utils/accessibility-assertions'
-import { click, press, Keys } from '../../test-utils/interactions'
+} from '@headlessui/tests/accessibility-assertions'
+import { click, press, Keys } from '@headlessui/tests/interactions'
+
+import { Menu, MenuButton, MenuItems, MenuItem } from './menu'
 
 jest.mock('../../hooks/use-id')
 

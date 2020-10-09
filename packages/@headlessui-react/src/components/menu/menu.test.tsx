@@ -1,9 +1,7 @@
 import React from 'react'
-import { menu } from '@headlessui/tests'
 import { render } from '@testing-library/react'
-
-import { Menu } from './menu'
-import { suppressConsoleLogs } from '../../test-utils/suppress-console-logs'
+import { menu } from '@headlessui/tests/suits'
+import { suppressConsoleLogs } from '@headlessui/tests/utils'
 import {
   MenuState,
   assertMenu,
@@ -14,8 +12,10 @@ import {
   getMenuButton,
   getMenu,
   getMenuItems,
-} from '../../test-utils/accessibility-assertions'
-import { click, press, Keys } from '../../test-utils/interactions'
+} from '@headlessui/tests/accessibility-assertions'
+import { click, press, Keys } from '@headlessui/tests/interactions'
+
+import { Menu } from './menu'
 import { PropsOf } from '../../types'
 
 jest.mock('../../hooks/use-id')
