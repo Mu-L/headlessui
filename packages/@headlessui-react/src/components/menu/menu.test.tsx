@@ -353,71 +353,69 @@ describe('Rendering composition', () => {
 })
 
 menu.run({
-  scenarios: {
-    [menu.scenarios.Default]({
-      button,
-      items,
-    }: {
-      button: PropsOf<typeof Menu.Button>
-      items: PropsOf<typeof Menu.Item>[]
-    }) {
-      return render(
-        <Menu>
-          <Menu.Button {...button} />
-          <Menu.Items>
-            {items.map((item, i) => (
-              <Menu.Item key={i} {...item} />
-            ))}
-          </Menu.Items>
-        </Menu>
-      )
-    },
-    [menu.scenarios.LastItemButton]({
-      button,
-      items,
-      lastItem,
-    }: {
-      button: PropsOf<typeof Menu.Button>
-      items: PropsOf<typeof Menu.Item>[]
-      lastItem: {
-        props: PropsOf<typeof Menu.Item>
-      } & PropsOf<'button'>
-    }) {
-      const { props: lastItemProps, ...lastItemButtonProps } = lastItem
-      return render(
-        <Menu>
-          <Menu.Button {...button} />
-          <Menu.Items>
-            {items.map((item, i) => (
-              <Menu.Item key={i} {...item} />
-            ))}
-            <Menu.Item {...lastItemProps}>
-              <button {...lastItemButtonProps} />
-            </Menu.Item>
-          </Menu.Items>
-        </Menu>
-      )
-    },
-    [menu.scenarios.MultipleMenus](
-      menus: {
-        button: PropsOf<typeof Menu.Button>
-        items: PropsOf<typeof Menu.Item>[]
-      }[]
-    ) {
-      return render(
-        <div>
-          {menus.map(({ button, items }, i) => (
-            <Menu key={i}>
-              <Menu.Button {...button} />
-              <Menu.Items>
-                {items.map((item, i) => (
-                  <Menu.Item key={i} {...item} />
-                ))}
-              </Menu.Items>
-            </Menu>
+  [menu.scenarios.Default]({
+    button,
+    items,
+  }: {
+    button: PropsOf<typeof Menu.Button>
+    items: PropsOf<typeof Menu.Item>[]
+  }) {
+    return render(
+      <Menu>
+        <Menu.Button {...button} />
+        <Menu.Items>
+          {items.map((item, i) => (
+            <Menu.Item key={i} {...item} />
           ))}
-        </div>
-      )
-    },
+        </Menu.Items>
+      </Menu>
+    )
+  },
+  [menu.scenarios.LastItemButton]({
+    button,
+    items,
+    lastItem,
+  }: {
+    button: PropsOf<typeof Menu.Button>
+    items: PropsOf<typeof Menu.Item>[]
+    lastItem: {
+      props: PropsOf<typeof Menu.Item>
+    } & PropsOf<'button'>
+  }) {
+    const { props: lastItemProps, ...lastItemButtonProps } = lastItem
+    return render(
+      <Menu>
+        <Menu.Button {...button} />
+        <Menu.Items>
+          {items.map((item, i) => (
+            <Menu.Item key={i} {...item} />
+          ))}
+          <Menu.Item {...lastItemProps}>
+            <button {...lastItemButtonProps} />
+          </Menu.Item>
+        </Menu.Items>
+      </Menu>
+    )
+  },
+  [menu.scenarios.MultipleMenus](
+    menus: {
+      button: PropsOf<typeof Menu.Button>
+      items: PropsOf<typeof Menu.Item>[]
+    }[]
+  ) {
+    return render(
+      <div>
+        {menus.map(({ button, items }, i) => (
+          <Menu key={i}>
+            <Menu.Button {...button} />
+            <Menu.Items>
+              {items.map((item, i) => (
+                <Menu.Item key={i} {...item} />
+              ))}
+            </Menu.Items>
+          </Menu>
+        ))}
+      </div>
+    )
   },
 })

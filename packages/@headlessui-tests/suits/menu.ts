@@ -2366,7 +2366,7 @@ export const menu = createTestSuit(Scenarios, ({ use }) => {
       })
     )
 
-    it.skip(
+    it(
       'should not be possible to activate a disabled item',
       suppressConsoleLogs(async () => {
         const clickHandler = jest.fn()

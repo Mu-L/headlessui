@@ -509,79 +509,77 @@ describe('Rendering composition', () => {
 })
 
 listbox.run({
-  scenarios: {
-    [listbox.scenarios.Default]({ listbox, label, button, options }) {
-      return renderTemplate({
-        template: `
-          <Listbox v-model="value">
-            <ListboxButton :disabled="button.disabled">{{button.children}}</ListboxButton>
-            <ListboxLabel v-if="label != null">{{label.children}}</ListboxLabel>
-            <ListboxOptions>
-              <ListboxOption
-                v-for="option in options"
-                :as="option.as"
-                :disabled="option.disabled"
-                :value="option.value"
-              >{{option.children}}</ListboxOption>
-            </ListboxOptions>
-          </Listbox>
-        `,
-        setup: () => {
-          const value = ref(listbox.value)
-          watch([value], () => listbox.onChange(value.value))
-          return { options, button, label, value }
-        },
-      })
-    },
-    [listbox.scenarios.MultipleListboxes](listboxes: any[]) {
-      return renderTemplate({
-        template: `
-          <Listbox v-for="listbox in listboxes" v-model="value">
-            <ListboxButton :disabled="listbox.button.disabled">{{listbox.button.children}}</ListboxButton>
-            <ListboxLabel v-if="label != null">{{listbox.label.children}}</ListboxLabel>
-            <ListboxOptions>
-              <ListboxOption
-                v-for="option in listbox.options"
-                :as="option.as"
-                :disabled="option.disabled"
-                :value="option.value"
-              >{{option.children}}</ListboxOption>
-            </ListboxOptions>
-          </Listbox>
-        `,
-        setup: () => {
-          return {
-            listboxes: listboxes.map(listbox => {
-              const value = ref(listbox.value)
-              watch([value], () => listbox.onChange(value.value))
-              return { ...listbox, value }
-            }),
-          }
-        },
-      })
-    },
-    [listbox.scenarios.WithState]({ handleChange, label, button, options }) {
-      return renderTemplate({
-        template: `
-          <Listbox v-model="value">
-            <ListboxButton :disabled="button.disabled">{{button.children}}</ListboxButton>
-            <ListboxLabel v-if="label != null">{{label.children}}</ListboxLabel>
-            <ListboxOptions>
-              <ListboxOption
-                v-for="option in options"
-                :as="option.as"
-                :disabled="option.disabled"
-                :value="option.value"
-              >{{option.children}}</ListboxOption>
-            </ListboxOptions>
-          </Listbox>
-        `,
-        setup: () => {
-          const value = ref(null)
-          watch([value], () => handleChange(value.value))
-          return { options, button, label, value }
-        },
-      })
-    },
+  [listbox.scenarios.Default]({ listbox, label, button, options }) {
+    return renderTemplate({
+      template: `
+        <Listbox v-model="value">
+          <ListboxButton :disabled="button.disabled">{{button.children}}</ListboxButton>
+          <ListboxLabel v-if="label != null">{{label.children}}</ListboxLabel>
+          <ListboxOptions>
+            <ListboxOption
+              v-for="option in options"
+              :as="option.as"
+              :disabled="option.disabled"
+              :value="option.value"
+            >{{option.children}}</ListboxOption>
+          </ListboxOptions>
+        </Listbox>
+      `,
+      setup: () => {
+        const value = ref(listbox.value)
+        watch([value], () => listbox.onChange(value.value))
+        return { options, button, label, value }
+      },
+    })
+  },
+  [listbox.scenarios.MultipleListboxes](listboxes: any[]) {
+    return renderTemplate({
+      template: `
+        <Listbox v-for="listbox in listboxes" v-model="value">
+          <ListboxButton :disabled="listbox.button.disabled">{{listbox.button.children}}</ListboxButton>
+          <ListboxLabel v-if="label != null">{{listbox.label.children}}</ListboxLabel>
+          <ListboxOptions>
+            <ListboxOption
+              v-for="option in listbox.options"
+              :as="option.as"
+              :disabled="option.disabled"
+              :value="option.value"
+            >{{option.children}}</ListboxOption>
+          </ListboxOptions>
+        </Listbox>
+      `,
+      setup: () => {
+        return {
+          listboxes: listboxes.map(listbox => {
+            const value = ref(listbox.value)
+            watch([value], () => listbox.onChange(value.value))
+            return { ...listbox, value }
+          }),
+        }
+      },
+    })
+  },
+  [listbox.scenarios.WithState]({ handleChange, label, button, options }) {
+    return renderTemplate({
+      template: `
+        <Listbox v-model="value">
+          <ListboxButton :disabled="button.disabled">{{button.children}}</ListboxButton>
+          <ListboxLabel v-if="label != null">{{label.children}}</ListboxLabel>
+          <ListboxOptions>
+            <ListboxOption
+              v-for="option in options"
+              :as="option.as"
+              :disabled="option.disabled"
+              :value="option.value"
+            >{{option.children}}</ListboxOption>
+          </ListboxOptions>
+        </Listbox>
+      `,
+      setup: () => {
+        const value = ref(null)
+        watch([value], () => handleChange(value.value))
+        return { options, button, label, value }
+      },
+    })
   },
 })

@@ -474,20 +474,75 @@ describe('Rendering composition', () => {
 })
 
 listbox.run({
-  scenarios: {
-    [listbox.scenarios.Default]({
-      listbox,
-      label,
-      button,
-      options,
-    }: {
+  [listbox.scenarios.Default]({
+    listbox,
+    label,
+    button,
+    options,
+  }: {
+    listbox: PropsOf<typeof Listbox>
+    label?: PropsOf<typeof Listbox.Label>
+    button: PropsOf<typeof Listbox.Button>
+    options: PropsOf<typeof Listbox.Option>[]
+  }) {
+    return render(
+      <Listbox {...listbox}>
+        {label && <Listbox.Label {...label} />}
+        <Listbox.Button {...button} />
+        <Listbox.Options>
+          {options.map((option, i) => (
+            <Listbox.Option key={i} {...option} />
+          ))}
+        </Listbox.Options>
+      </Listbox>
+    )
+  },
+  [listbox.scenarios.MultipleListboxes](
+    listboxes: {
       listbox: PropsOf<typeof Listbox>
       label?: PropsOf<typeof Listbox.Label>
       button: PropsOf<typeof Listbox.Button>
       options: PropsOf<typeof Listbox.Option>[]
-    }) {
-      return render(
-        <Listbox {...listbox}>
+    }[]
+  ) {
+    return render(
+      <div>
+        {listboxes.map(({ listbox, label, button, options }, i) => (
+          <Listbox key={i} {...listbox}>
+            {label && <Listbox.Label {...label} />}
+            <Listbox.Button {...button} />
+            <Listbox.Options>
+              {options.map((option, i) => (
+                <Listbox.Option key={i} {...option} />
+              ))}
+            </Listbox.Options>
+          </Listbox>
+        ))}
+      </div>
+    )
+  },
+  [listbox.scenarios.WithState]({
+    handleChange,
+    label,
+    button,
+    options,
+  }: {
+    handleChange: (value: string | undefined) => void
+    label?: PropsOf<typeof Listbox.Label>
+    button: PropsOf<typeof Listbox.Button>
+    options: PropsOf<typeof Listbox.Option>[]
+  }) {
+    function Example() {
+      const [value, setValue] = React.useState(undefined)
+
+      return (
+        <Listbox
+          value={value}
+          onChange={value => {
+            setValue(value)
+            handleChange(value)
+          }}
+        >
           {label && <Listbox.Label {...label} />}
           <Listbox.Button {...button} />
           <Listbox.Options>
@@ -497,65 +552,8 @@ listbox.run({
           </Listbox.Options>
         </Listbox>
       )
-    },
-    [listbox.scenarios.MultipleListboxes](
-      listboxes: {
-        listbox: PropsOf<typeof Listbox>
-        label?: PropsOf<typeof Listbox.Label>
-        button: PropsOf<typeof Listbox.Button>
-        options: PropsOf<typeof Listbox.Option>[]
-      }[]
-    ) {
-      return render(
-        <div>
-          {listboxes.map(({ listbox, label, button, options }, i) => (
-            <Listbox key={i} {...listbox}>
-              {label && <Listbox.Label {...label} />}
-              <Listbox.Button {...button} />
-              <Listbox.Options>
-                {options.map((option, i) => (
-                  <Listbox.Option key={i} {...option} />
-                ))}
-              </Listbox.Options>
-            </Listbox>
-          ))}
-        </div>
-      )
-    },
-    [listbox.scenarios.WithState]({
-      handleChange,
-      label,
-      button,
-      options,
-    }: {
-      handleChange: (value: string | undefined) => void
-      label?: PropsOf<typeof Listbox.Label>
-      button: PropsOf<typeof Listbox.Button>
-      options: PropsOf<typeof Listbox.Option>[]
-    }) {
-      function Example() {
-        const [value, setValue] = React.useState(undefined)
+    }
 
-        return (
-          <Listbox
-            value={value}
-            onChange={value => {
-              setValue(value)
-              handleChange(value)
-            }}
-          >
-            {label && <Listbox.Label {...label} />}
-            <Listbox.Button {...button} />
-            <Listbox.Options>
-              {options.map((option, i) => (
-                <Listbox.Option key={i} {...option} />
-              ))}
-            </Listbox.Options>
-          </Listbox>
-        )
-      }
-
-      return render(<Example />)
-    },
+    return render(<Example />)
   },
 })

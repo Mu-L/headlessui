@@ -112,11 +112,35 @@ describe('Render composition', () => {
 })
 
 switchComponent.run({
-  scenarios: {
-    [switchComponent.scenarios.Default]({ handleChange }) {
-      function Example() {
-        const [state, setState] = React.useState(false)
-        return (
+  [switchComponent.scenarios.Default]({ handleChange }) {
+    function Example() {
+      const [state, setState] = React.useState(false)
+      return (
+        <Switch
+          checked={state}
+          onChange={value => {
+            setState(value)
+            handleChange(value)
+          }}
+        />
+      )
+    }
+
+    return render(<Example />)
+  },
+  [switchComponent.scenarios.WithOtherElement]() {
+    return render(
+      <div>
+        <Switch checked={false} onChange={console.log} />
+        <button id="btn">Other element</button>
+      </div>
+    )
+  },
+  [switchComponent.scenarios.WithGroup]({ handleChange }) {
+    function Example() {
+      const [state, setState] = React.useState(false)
+      return (
+        <Switch.Group>
           <Switch
             checked={state}
             onChange={value => {
@@ -124,37 +148,11 @@ switchComponent.run({
               handleChange(value)
             }}
           />
-        )
-      }
-
-      return render(<Example />)
-    },
-    [switchComponent.scenarios.WithOtherElement]() {
-      return render(
-        <div>
-          <Switch checked={false} onChange={console.log} />
-          <button id="btn">Other element</button>
-        </div>
+          <Switch.Label>The label</Switch.Label>
+        </Switch.Group>
       )
-    },
-    [switchComponent.scenarios.WithGroup]({ handleChange }) {
-      function Example() {
-        const [state, setState] = React.useState(false)
-        return (
-          <Switch.Group>
-            <Switch
-              checked={state}
-              onChange={value => {
-                setState(value)
-                handleChange(value)
-              }}
-            />
-            <Switch.Label>The label</Switch.Label>
-          </Switch.Group>
-        )
-      }
+    }
 
-      return render(<Example />)
-    },
+    return render(<Example />)
   },
 })

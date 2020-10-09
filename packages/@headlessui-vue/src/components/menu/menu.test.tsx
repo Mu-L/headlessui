@@ -570,77 +570,75 @@ describe('Rendering composition', () => {
 })
 
 menu.run({
-  scenarios: {
-    [menu.scenarios.Default]({ button, items }) {
-      return renderTemplate({
-        template: `
-          <Menu>
-            <MenuButton :disabled="button.disabled">{{button.children}}</MenuButton>
-            <MenuItems>
-              <MenuItem
-                v-for="item in items"
-                :as="item.as"
-                :disabled="item.disabled"
-                @click="item.onClick?.($event)"
-              >{{item.children}}</MenuItem>
-            </MenuItems>
-          </Menu>
-        `,
-        setup: () => ({ items, button }),
-      })
-    },
-    [menu.scenarios.LastItemButton]({ button, items, lastItem }) {
-      const { props: lastItemProps, ...lastItemButtonProps } = lastItem
+  [menu.scenarios.Default]({ button, items }) {
+    return renderTemplate({
+      template: `
+        <Menu>
+          <MenuButton :disabled="button.disabled">{{button.children}}</MenuButton>
+          <MenuItems>
+            <MenuItem
+              v-for="item in items"
+              :as="item.as"
+              :disabled="item.disabled"
+              @click="item.onClick?.($event)"
+            >{{item.children}}</MenuItem>
+          </MenuItems>
+        </Menu>
+      `,
+      setup: () => ({ items, button }),
+    })
+  },
+  [menu.scenarios.LastItemButton]({ button, items, lastItem }) {
+    const { props: lastItemProps, ...lastItemButtonProps } = lastItem
 
-      return renderTemplate({
-        template: `
-          <Menu>
-            <MenuButton :disabled="button.disabled">{{button.children}}</MenuButton>
+    return renderTemplate({
+      template: `
+        <Menu>
+          <MenuButton :disabled="button.disabled">{{button.children}}</MenuButton>
+          <MenuItems>
+            <MenuItem
+              v-for="item in items"
+              :as="item.as"
+              :disabled="item.disabled"
+              @click="item.onClick?.($event)"
+            >{{item.children}}</MenuItem>
+            <MenuItem 
+              :as="lastItemProps.as"
+              :disabled="lastItemProps.disabled"
+              @click="lastItemProps.onClick?.($event)"
+            >
+              <button
+                :disabled="lastItemButtonProps.disabled"
+                @click="lastItemButtonProps.onClick?.($event)"
+              >{{lastItemButtonProps.children}}</button>
+            </MenuItem>
+          </MenuItems>
+        </Menu>
+      `,
+      setup: () => ({ items, button, lastItemProps, lastItemButtonProps }),
+    })
+  },
+  [menu.scenarios.MultipleMenus](menus) {
+    return renderTemplate({
+      template: `
+        <div>
+          <Menu v-for="(menu, i) in menus" key="i">
+            <MenuButton
+              :disabled="menu.button.disabled"
+              @click="menu.button.onClick?.($event)"
+            >{{menu.button.children}}</MenuButton>
             <MenuItems>
               <MenuItem
-                v-for="item in items"
+                v-for="item in menu.items"
                 :as="item.as"
                 :disabled="item.disabled"
                 @click="item.onClick?.($event)"
               >{{item.children}}</MenuItem>
-              <MenuItem 
-                :as="lastItemProps.as"
-                :disabled="lastItemProps.disabled"
-                @click="lastItemProps.onClick?.($event)"
-              >
-                <button
-                  :disabled="lastItemButtonProps.disabled"
-                  @click="lastItemButtonProps.onClick?.($event)"
-                >{{lastItemButtonProps.children}}</button>
-              </MenuItem>
             </MenuItems>
           </Menu>
-        `,
-        setup: () => ({ items, button, lastItemProps, lastItemButtonProps }),
-      })
-    },
-    [menu.scenarios.MultipleMenus](menus) {
-      return renderTemplate({
-        template: `
-          <div>
-            <Menu v-for="(menu, i) in menus" key="i">
-              <MenuButton
-                :disabled="menu.button.disabled"
-                @click="menu.button.onClick?.($event)"
-              >{{menu.button.children}}</MenuButton>
-              <MenuItems>
-                <MenuItem
-                  v-for="item in menu.items"
-                  :as="item.as"
-                  :disabled="item.disabled"
-                  @click="item.onClick?.($event)"
-                >{{item.children}}</MenuItem>
-              </MenuItems>
-            </Menu>
-          </div>
-        `,
-        setup: () => ({ menus }),
-      })
-    },
+        </div>
+      `,
+      setup: () => ({ menus }),
+    })
   },
 })

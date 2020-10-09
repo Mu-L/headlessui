@@ -38,7 +38,7 @@ describe('Safe guards', () => {
       expect(() => render(Component)).toThrowError(
         `<${name} /> is missing a parent <SwitchGroup /> component.`
       )
-    })
+    }, 'warn')
   )
 
   it('should be possible to render a Switch without crashing', () => {
@@ -169,42 +169,40 @@ describe('Render composition', () => {
 })
 
 switchComponent.run({
-  scenarios: {
-    [switchComponent.scenarios.Default]({ handleChange }) {
-      return renderTemplate({
-        template: `<Switch v-model="checked" />`,
-        setup() {
-          const checked = ref(false)
-          watch([checked], () => handleChange(checked.value))
-          return { checked }
-        },
-      })
-    },
-    [switchComponent.scenarios.WithOtherElement]() {
-      return renderTemplate({
-        template: `
-          <div>
-            <Switch v-model="checked" />
-            <button id="btn">Other element</button>
-          </div>
-        `,
-        setup: () => ({ checked: ref(false) }),
-      })
-    },
-    [switchComponent.scenarios.WithGroup]({ handleChange }) {
-      return renderTemplate({
-        template: `
-          <SwitchGroup>
-            <Switch v-model="checked" />
-            <SwitchLabel>The label</SwitchLabel>
-          </SwitchGroup>
-        `,
-        setup() {
-          const checked = ref(false)
-          watch([checked], () => handleChange(checked.value))
-          return { checked }
-        },
-      })
-    },
+  [switchComponent.scenarios.Default]({ handleChange }) {
+    return renderTemplate({
+      template: `<Switch v-model="checked" />`,
+      setup() {
+        const checked = ref(false)
+        watch([checked], () => handleChange(checked.value))
+        return { checked }
+      },
+    })
+  },
+  [switchComponent.scenarios.WithOtherElement]() {
+    return renderTemplate({
+      template: `
+        <div>
+          <Switch v-model="checked" />
+          <button id="btn">Other element</button>
+        </div>
+      `,
+      setup: () => ({ checked: ref(false) }),
+    })
+  },
+  [switchComponent.scenarios.WithGroup]({ handleChange }) {
+    return renderTemplate({
+      template: `
+        <SwitchGroup>
+          <Switch v-model="checked" />
+          <SwitchLabel>The label</SwitchLabel>
+        </SwitchGroup>
+      `,
+      setup() {
+        const checked = ref(false)
+        watch([checked], () => handleChange(checked.value))
+        return { checked }
+      },
+    })
   },
 })

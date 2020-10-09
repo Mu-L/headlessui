@@ -12,9 +12,10 @@ type Execute<TScenarios> = (context: {
   use: (scenario: EnumValue<TScenarios>, context?: any) => ScenarioReturnType
 }) => void
 
-type Configuration<TScenarios> = {
-  scenarios: Record<EnumValue<TScenarios>, (context?: any) => ScenarioReturnType>
-}
+type Configuration<TScenarios> = Record<
+  EnumValue<TScenarios>,
+  (context?: any) => ScenarioReturnType
+>
 
 export function createTestSuit<TScenarios>(scenarios: TScenarios, execute: Execute<TScenarios>) {
   return {
@@ -23,7 +24,7 @@ export function createTestSuit<TScenarios>(scenarios: TScenarios, execute: Execu
       return execute({
         use(scenario, context) {
           // @ts-expect-error
-          return match(scenario, configuration.scenarios, context)
+          return match(scenario, configuration, context)
         },
       })
     },
