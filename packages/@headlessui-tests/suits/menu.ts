@@ -33,7 +33,7 @@ enum Scenarios {
   MultipleMenus,
 }
 
-export default createTestSuit(Scenarios, ({ use }) => {
+export const menu = createTestSuit(Scenarios, ({ use }) => {
   describe('Keyboard interactions', () => {
     describe('`Enter` key', () => {
       it(
